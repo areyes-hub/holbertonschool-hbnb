@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant User as User
+    participant API as Place API (Presentation Layer)
+    participant BL as Place Model (Business Logic Layer)
+    participant DB as Database (Persistence Layer)
+    
+    User->>API: POST /place/create
+    API->>BL: validateAndCreatePlace(data)
+    BL->>DB: savePlace(place)
+    DB->>BL: success
+    BL->>API: placeCreated(place)
+    API->>User: success response

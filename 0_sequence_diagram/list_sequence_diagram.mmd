@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant User as User
+    participant API as Place API (Presentation Layer)
+    participant BL as Place Model (Business Logic Layer)
+    participant DB as Database (Persistence Layer)
+    
+    User->>API: GET /places?filter=criteria
+    API->>BL: getPlaces(filter)
+    BL->>DB: queryPlaces(criteria)
+    DB->>BL: placesList
+    BL->>API: placesList
+    API->>User: success response (places list)

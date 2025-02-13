@@ -1,0 +1,70 @@
+classDiagram
+    %% Define User class
+    class User {
+        <<Entity>>
+        +UUID id
+        +String firstName
+        +String lastName
+        +String email
+        +String password
+        +Boolean isAdmin
+        +Datetime createdAt
+        +Datetime updatedAt
+        +register()
+        +updateProfile()
+        +deleteProfile()
+    }
+
+    %% Define Place class
+    class Place {
+        <<Entity>>
+        +UUID id
+        +String title
+        +String description
+        +Float price
+        +Float latitude
+        +Float longitude
+        +Datetime createdAt
+        +Datetime updatedAt
+        +create()
+        +update()
+        +delete()
+        +list()
+    }
+
+    %% Define Review class
+    class Review {
+        <<Entity>>
+        +UUID id
+        +Integer rating
+        +String comment
+        +Datetime createdAt
+        +Datetime updatedAt
+        +create()
+        +update()
+        +delete()
+        +listByPlace()
+    }
+
+    %% Define Amenity class
+    class Amenity {
+        <<Entity>>
+        +UUID id
+        +String name
+        +String description
+        +Datetime createdAt
+        +Datetime updatedAt
+        +create()
+        +update()
+        +delete()
+        +list()
+    }
+
+    %% Relationships
+    User "1" --> "0..*" Place : creates
+    Place "1" --> "0..*" Review : has
+    User "1" --> "0..*" Review : writes
+    Place "1" --> "0..*" Amenity : has
+
+    %% Multiplicity for relationships
+    %% A user can create multiple places, a place can have multiple reviews, etc.

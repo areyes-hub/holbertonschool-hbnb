@@ -1,0 +1,49 @@
+%% High-Level Package Diagram for HBnB Application
+
+graph TD
+    %% Define Layers
+    A[Presentation Layer] --> B[Business Logic Layer]
+    B --> C[Persistence Layer]
+    
+    %% Presentation Layer Components
+    A1[Services]
+    A2[API Endpoints]
+    
+    %% Business Logic Layer Components
+    B1[User Model]
+    B2[Place Model]
+    B3[Review Model]
+    B4[Amenity Model]
+    
+    %% Persistence Layer Components
+    C1[Database Access Object]
+    C2[Repositories]
+    
+    %% Facade (Interface)
+    F[Facade]
+
+    %% Communication between layers via Facade Pattern
+    A1 --> F
+    A2 --> F
+    F --> B1
+    F --> B2
+    F --> B3
+    F --> B4
+    F --> C1
+    F --> C2
+
+    %% Display Labels for Layers
+    classDef presentation fill:#f9f,stroke:#333,stroke-width:2px;
+    class A, presentation;
+    
+    classDef business fill:#ccf,stroke:#333,stroke-width:2px;
+    class B, business;
+    
+    classDef persistence fill:#cfc,stroke:#333,stroke-width:2px;
+    class C, persistence;
+    
+    class F, facade,fill:#ffcc00,stroke:#333,stroke-width:2px;
+    
+    class A1,A2, f;
+    class B1,B2,B3,B4, f;
+    class C1,C2, f;

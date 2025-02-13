@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant User as User
+    participant API as User API (Presentation Layer)
+    participant BL as User Model (Business Logic Layer)
+    participant DB as Database (Persistence Layer)
+    
+    User->>API: POST /register
+    API->>BL: validateAndCreateUser(data)
+    BL->>DB: saveUser(user)
+    DB->>BL: success
+    BL->>API: userCreated(user)
+    API->>User: success response

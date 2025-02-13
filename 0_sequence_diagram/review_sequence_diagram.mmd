@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant User as User
+    participant API as Review API (Presentation Layer)
+    participant BL as Review Model (Business Logic Layer)
+    participant DB as Database (Persistence Layer)
+    
+    User->>API: POST /review/submit
+    API->>BL: validateAndCreateReview(data)
+    BL->>DB: saveReview(review)
+    DB->>BL: success
+    BL->>API: reviewCreated(review)
+    API->>User: success response
