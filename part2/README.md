@@ -9,7 +9,7 @@ In this part of the HBnB Project, you will begin the implementation phase of the
 
 # Objectives
 
-* By the end of this project, you should be able to:
+By the end of this project, you should be able to:
 
 Set Up the Project Structure:
 
@@ -38,7 +38,8 @@ Business Logic Layer: Building the core models and logic that drive the applicat
 
 At this stage, you won’t need to worry about user authentication or access control. However, you should ensure that the code is modular and organized, making it easy to integrate these features in Part 3.
 
-* Learning Objectives
+# Learning Objectives
+
 This part of the project is designed to help you achieve the following learning outcomes:
 
 Modular Design and Architecture: Learn how to structure a Python application using best practices for modularity and separation of concerns.
