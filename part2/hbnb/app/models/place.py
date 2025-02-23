@@ -1,5 +1,6 @@
-from base import BaseModel
-from user import User
+from app.models.base import BaseModel
+from app.models.user import User
+from app.models.amenity import Amenity
 
 
 class Place(BaseModel):
@@ -22,4 +23,6 @@ class Place(BaseModel):
 
 
     def add_amenities(self, amenity):
+        if not isinstance(amenity, Amenity):
+            raise ValueError("amenity must be an instance of Amenity")
         self.amenities.append(amenity)

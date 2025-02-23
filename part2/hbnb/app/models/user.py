@@ -1,4 +1,5 @@
-from base import BaseModel
+from app.models.base import BaseModel
+from app.models.place import Place
 
 
 class User(BaseModel):
@@ -12,6 +13,8 @@ class User(BaseModel):
 
 
     def add_place(self, obj):
+        if not isinstance(obj, Place):
+            raise ValueError("object must be an instance of Place")
         self.places.append(obj)
 
 
