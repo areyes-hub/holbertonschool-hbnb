@@ -1,9 +1,8 @@
 from app.models.base import BaseModel
-from app.models.place import Place
 
 
 class User(BaseModel):
-    def __init__(self, first_name, last_name, email, is_admin=False):
+    def __init__(self, first_name="", last_name="", email="", is_admin=False):
         super().__init__()
         self.first_name = first_name
         self.last_name = last_name
@@ -13,10 +12,4 @@ class User(BaseModel):
 
 
     def add_place(self, obj):
-        if not isinstance(obj, Place):
-            raise ValueError("object must be an instance of Place")
         self.places.append(obj)
-
-
-    def delete(self):
-        del self
