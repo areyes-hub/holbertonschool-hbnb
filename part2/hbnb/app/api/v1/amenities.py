@@ -29,7 +29,7 @@ class AmenityList(Resource):
         """Get all amenities"""
         amenities = facade.amenity_repo.get_all()
         if not amenities:
-            return {"message": "No amenities found"}, 404
+            return {"error": "No amenities found"}, 404
         return [
             {
                 'id': amenity.id,
@@ -64,8 +64,5 @@ class AmenityResource(Resource):
         if not amenity:
             return {"error": "Amenity not found"}, 404
         updated_details = api.payload
-        updated_amenity = facade.update_amenity(amenity_id, updated_details)
-        return {
-            'id': updated_amenity.id,
-            'name': updated_amenity.name
-        }, 200
+        facade.update_amenity(amenity_id, updated_details)
+        return {"message": "Amenity updated successfully"}, 200

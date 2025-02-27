@@ -1,10 +1,8 @@
 from app.models.base import BaseModel
-from app.models.place import Place
-from app.models.user import User
 
 
 class Review(BaseModel):
-    def __init__(self, text, rating, place, user):
+    def __init__(self, text, rating, place_id, user_id):
         super().__init__()
         if not isinstance(text, str):
             raise TypeError("text must be a string")
@@ -14,9 +12,19 @@ class Review(BaseModel):
         if 1 > rating > 5:
             raise ValueError("rating must be between 1 - 5")
         self.rating = rating
-        if not isinstance(place, Place):
-            raise ValueError("place must be an instance of Place")
-        self.place = place
-        if not isinstance(user, User):
-            raise ValueError("user must be an instance of User")
-        self.user = User(user)
+        self.place_id = place_id
+        self.place = self.get_place(self.place_id)
+        self.user_id = user_id
+        self.user = self.get_User(self.user_id)
+
+
+    def get_place(self, id):
+        from app.services import facade
+        place = facade.get_place(id)
+        return place
+    
+
+    def get_User(self, id):
+        from app.services import facade
+        user = facade.get_user(id)
+        return user

@@ -1,10 +1,8 @@
 from app.models.base import BaseModel
-from app.models.user import User
-from app.models.amenity import Amenity
 
 
 class Place(BaseModel):
-    def __init__(self, title, description, price, latitude, longitude, owner):
+    def __init__(self, title, description, price, latitude, longitude, owner_id, amenities=[]):
         super().__init__()
         if not isinstance(title, str):
             raise TypeError("title must be a string")
@@ -16,6 +14,8 @@ class Place(BaseModel):
         self.description = description
         if not isinstance(price, float):
             raise TypeError("price must be a float")
+        if price < 0.0:
+            raise ValueError("price must be a non negative float")
         self.price = price
         if not isinstance(latitude, float):
             raise TypeError("latitude must be a float")
@@ -27,11 +27,16 @@ class Place(BaseModel):
         if longitude < -180.0 and longitude > 180.0:
             raise ValueError("longitude is out of range")
         self.longitude = longitude
-        if not isinstance(owner, User):
-            raise ValueError("owner must be an instance of User")
-        self.owner = owner
+        self.owner_id = owner_id
+        self.owner = self.get_owner(self.owner_id)
         self.reviews = []
-        self.amenities = []
+        self.amenities = amenities
+
+
+    def get_owner(self, id):
+        from app.services import facade
+        var = facade.get_user(id)
+        return var
 
 
     def add_review(self, review):
@@ -39,6 +44,4 @@ class Place(BaseModel):
 
 
     def add_amenities(self, amenity):
-        if not isinstance(amenity, Amenity):
-            raise ValueError("amenity must be an instance of Amenity")
         self.amenities.append(amenity)
