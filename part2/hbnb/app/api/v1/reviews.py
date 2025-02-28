@@ -67,20 +67,24 @@ class ReviewResource(Resource):
     @api.response(400, "Invalid input data")
     def put(self, review_id):
         """Update review's data"""
-        updated_details = api.payload
-        updated_review = facade.get_review(review_id)
-        if not updated_review:
+        review = facade.get_review(review_id)
+        if not review:
             return {"error": "Review not found"}, 404
-        if "text" in updated_details:
-            if updated_review:
-                updated_review["text"] = updated_details["text"]
-            else:
-                return {"error": "Review not found"}, 404
+
+        updated_details = api.payload
         
+        # Create a dictionary for updated attributes
+        updated_data = {}
+        
+        if "text" in updated_details:
+            updated_data["text"] = updated_details["text"]
+
         if "rating" in updated_details:
-            updated_review["rating"] = updated_details["rating"]
-            
-        facade.update_review(review_id, updated_review)
+            if not isinstance(updated_details["rating"], int) or not (1 <= updated_details["rating"] <= 5):
+                return {"error": "Rating must be an integer between 1 and 5"}, 400
+            updated_data["rating"] = updated_details["rating"]
+
+        facade.update_review(review_id, updated_data)
         return {"message": "Review updated successfully"}, 200
 
 
@@ -102,6 +106,7 @@ class PlaceReviewsList(Resource):
     def get(self, place_id):
         """Get all reviews for a specific place"""
         reviews = facade.get_reviews_by_place(place_id)
+        print(reviews)
         if not reviews:
             return {"error": "No reviews found for this place"}, 404
         return [

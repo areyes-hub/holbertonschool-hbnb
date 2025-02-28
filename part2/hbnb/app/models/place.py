@@ -19,18 +19,18 @@ class Place(BaseModel):
         self.price = price
         if not isinstance(latitude, float):
             raise TypeError("latitude must be a float")
-        if latitude < -90.0 and latitude > 90.0:
+        if latitude < -90.0 or latitude > 90.0:
             raise ValueError("latitude is out of range")
         self.latitude = latitude
         if not isinstance(longitude, float):
             raise TypeError("longitude must be a float")
-        if longitude < -180.0 and longitude > 180.0:
+        if longitude < -180.0 or longitude > 180.0:
             raise ValueError("longitude is out of range")
         self.longitude = longitude
         self.owner_id = owner_id
         self.owner = self.get_owner(self.owner_id)
-        self.reviews = []
         self.amenities = amenities
+        self.reviews = []
 
 
     def get_owner(self, id):
@@ -39,9 +39,9 @@ class Place(BaseModel):
         return var
 
 
-    def add_review(self, review):
-        self.reviews.append(review)
-
-
     def add_amenities(self, amenity):
         self.amenities.append(amenity)
+
+
+    def add_review(self, review):
+        self.reviews.append(review)

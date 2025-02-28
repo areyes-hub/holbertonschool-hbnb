@@ -102,6 +102,9 @@ class HBnBFacade:
         if not user_id or not place_id:
             raise ValueError("User ID and Place ID must be provided.")
         review = Review(**review_data)
+        place = self.get_place(place_id)
+        if place:
+            place.add_review(review)
         self.review_repo.add(review)
         return review
 
@@ -115,18 +118,21 @@ class HBnBFacade:
 
 
     def get_reviews_by_place(self, place_id):
-        return self.review_repo.get(place_id)
+        place = self.get_place(place_id)
+        if place:
+            return place.reviews
+        return []
 
 
     def update_review(self, review_id, review_data):
         review = self.review_repo.get(review_id)
         if review:
-            review.update(review_data)
-        return review
+            self.review_repo.update(review_id, review_data)
+        return review_data
 
 
     def delete_review(self, review_id):
         review = self.review_repo.get(review_id)
         if review:
-            review.delete(review_id)
+            self.review_repo.delete(review_id)
         return {"message": "Review deleted successfully"}
