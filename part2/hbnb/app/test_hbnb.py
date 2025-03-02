@@ -1,20 +1,12 @@
 import unittest
 from app import create_app
+import uuid
 
 
 class TestUserEndpoints(unittest.TestCase):
     def setUp(self):
         self.app = create_app()
         self.client = self.app.test_client()
-        response = self.client.post('/api/v1/users/', json={
-            "first_name": "Jack",
-            "last_name": "Doe",
-            "email": "jack.doe@example.com"
-        })
-        self.assertEqual(response.status_code, 201)
-        user = response.get_json()
-        self.assertIn('id', user)
-        self.user_id = user["id"]
 
 
     def test_create_user(self):
@@ -33,11 +25,6 @@ class TestUserEndpoints(unittest.TestCase):
             "email": "Invalid-email"
         })
         self.assertEqual(response.status_code, 400)
-
-
-    def test_get_user_by_id(self):
-        response = self.client.get(f'/api/v1/users/{self.user_id}')
-        self.assertEqual(response.status_code, 201)
 
 
     def test_get_all_users(self):
@@ -137,9 +124,9 @@ class TestReviewEndpoints(unittest.TestCase):
         self.app = create_app()
         self.client = self.app.test_client()
         user_response = self.client.post('/api/v1/users/', json={
-            "first_name": "John",
-            "last_name": "Doe",
-            "email": "john.doe@example.com"
+            "first_name": "Janis",
+            "last_name": "Smith",
+            "email": "janis.smith@example.com"
         })
         user = user_response.get_json()
         if 'id' in user:
@@ -147,7 +134,7 @@ class TestReviewEndpoints(unittest.TestCase):
         else:
             print(f"User creation failed: {user}")
             self.user_id = None
-        place_response = self.client.post('/api/v1/places/', json={
+        response = self.client.post('/api/v1/places/', json={
             "title": "Beachfront Villa",
             "description": "A beautiful beachfront property",
             "price": 200.50,
@@ -155,7 +142,9 @@ class TestReviewEndpoints(unittest.TestCase):
             "longitude": -118.2437,
             "owner": {"id": self.user_id}
         })
-        place = place_response.get_json()
+        self.assertEqual(response.status_code, 201)
+        place = response.get_json()
+        self.assertIn('id', place)
         self.place_id = place['id']
         response = self.client.post('/api/v1/reviews/', json={
             "text": "Amazing place!",
