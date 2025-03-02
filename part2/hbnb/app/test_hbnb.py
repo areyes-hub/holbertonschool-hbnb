@@ -65,17 +65,6 @@ class TestPlaceEndpoints(unittest.TestCase):
         self.place_id = place['id']
 
 
-    def tearDown(self):
-        if hasattr(self, 'place_id') and self.place_id:
-            self.client.delete(f'/api/v1/places/{self.place_id}')
-        
-        if hasattr(self, 'user_id') and self.user_id:
-            self.client.delete(f'/api/v1/users/{self.user_id}')
-
-        if hasattr(self, 'email'):
-            self.client.delete(f'/api/v1/users/')
-
-
     def test_create_place(self):
         response = self.client.post('/api/v1/places/', json={
             "title": "Beachfront Villa",
