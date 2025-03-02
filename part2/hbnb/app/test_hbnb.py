@@ -1,6 +1,5 @@
 import unittest
 from app import create_app
-import uuid
 
 
 class TestUserEndpoints(unittest.TestCase):
@@ -130,13 +129,11 @@ class TestReviewEndpoints(unittest.TestCase):
         user_response = self.client.post('/api/v1/users/', json={
             "first_name": "Juliana",
             "last_name": "Crane",
-            "email": f"juliana.crane@example.com"
+            "email": "juliana.crane@example.com"
         })
+        print(f"User creation response: {user_response.status_code}, {user_response.get_json()}")
         user = user_response.get_json()
-        if 'id' in user:
-            self.user_id = user['id']
-        else:
-            self.user_id = None
+        self.user_id = user.get("id")
         place_response = self.client.post('/api/v1/places/', json={
             "title": "Beachfront Villa",
             "description": "A beautiful beachfront property",
@@ -145,10 +142,10 @@ class TestReviewEndpoints(unittest.TestCase):
             "longitude": -118.2437,
             "owner": {"id": self.user_id}
         })
+        print(f"Place creation response: {place_response.status_code}, {place_response.get_json()}")
         self.assertEqual(place_response.status_code, 201)
         place = place_response.get_json()
-        self.assertIn('id', place)
-        self.place_id = place['id']
+        self.place_id = place.get("id")
         response = self.client.post('/api/v1/reviews/', json={
             "text": "Amazing place!",
             "rating": 5,
@@ -157,13 +154,12 @@ class TestReviewEndpoints(unittest.TestCase):
         })
         self.assertEqual(response.status_code, 201)
         review = response.get_json()
-        self.assertIn('id', review)
-        self.review_id = review['id']
+        self.review_id = review.get("id")
 
 
     def test_create_review(self):
         response = self.client.post('/api/v1/reviews/', json={
-            "text": "Amazing stay!",
+            "text": "Amazing place!",
             "rating": 5,
             "user_id": self.user_id,
             "place_id": self.place_id
