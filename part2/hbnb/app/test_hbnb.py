@@ -45,7 +45,6 @@ class TestPlaceEndpoints(unittest.TestCase):
         if 'id' in user:
             self.user_id = user['id']
         else:
-            print(f"User creation failed: {user}")
             self.user_id = None
         response = self.client.post('/api/v1/places/', json={
             "title": "Beachfront Villa",
@@ -132,7 +131,6 @@ class TestReviewEndpoints(unittest.TestCase):
         if 'id' in user:
             self.user_id = user['id']
         else:
-            print(f"User creation failed: {user}")
             self.user_id = None
         response = self.client.post('/api/v1/places/', json={
             "title": "Beachfront Villa",
