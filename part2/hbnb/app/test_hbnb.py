@@ -8,6 +8,11 @@ class TestUserEndpoints(unittest.TestCase):
         self.app = create_app()
         self.client = self.app.test_client()
 
+    
+    def tearDown(self):
+        if hasattr(self, 'email'):
+            self.client.delete(f'/api/v1/users/')
+
 
     def test_create_user(self):
         response = self.client.post('/api/v1/users/', json={
@@ -58,6 +63,17 @@ class TestPlaceEndpoints(unittest.TestCase):
         place = response.get_json()
         self.assertIn('id', place)
         self.place_id = place['id']
+
+
+    def tearDown(self):
+        if hasattr(self, 'place_id') and self.place_id:
+            self.client.delete(f'/api/v1/places/{self.place_id}')
+        
+        if hasattr(self, 'user_id') and self.user_id:
+            self.client.delete(f'/api/v1/users/{self.user_id}')
+
+        if hasattr(self, 'email'):
+            self.client.delete(f'/api/v1/users/')
 
 
     def test_create_place(self):
@@ -123,16 +139,16 @@ class TestReviewEndpoints(unittest.TestCase):
         self.app = create_app()
         self.client = self.app.test_client()
         user_response = self.client.post('/api/v1/users/', json={
-            "first_name": "Janis",
-            "last_name": "Smith",
-            "email": f"janis.smith{uuid.uuid4()}@example.com"
+            "first_name": "Juliana",
+            "last_name": "Crane",
+            "email": f"juliana.crane@example.com"
         })
         user = user_response.get_json()
         if 'id' in user:
             self.user_id = user['id']
         else:
             self.user_id = None
-        response = self.client.post('/api/v1/places/', json={
+        place_response = self.client.post('/api/v1/places/', json={
             "title": "Beachfront Villa",
             "description": "A beautiful beachfront property",
             "price": 200.50,
@@ -140,8 +156,8 @@ class TestReviewEndpoints(unittest.TestCase):
             "longitude": -118.2437,
             "owner": {"id": self.user_id}
         })
-        self.assertEqual(response.status_code, 201)
-        place = response.get_json()
+        self.assertEqual(place_response.status_code, 201)
+        place = place_response.get_json()
         self.assertIn('id', place)
         self.place_id = place['id']
         response = self.client.post('/api/v1/reviews/', json={
@@ -158,8 +174,8 @@ class TestReviewEndpoints(unittest.TestCase):
 
     def test_create_review(self):
         response = self.client.post('/api/v1/reviews/', json={
-            "text": "Fantastic stay!",
-            "rating": 4,
+            "text": "Amazing stay!",
+            "rating": 5,
             "user_id": self.user_id,
             "place_id": self.place_id
         })

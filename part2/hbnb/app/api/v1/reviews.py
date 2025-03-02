@@ -21,6 +21,7 @@ class ReviewList(Resource):
         review_data = api.payload
         new_review = facade.create_review(review_data)
         return {
+            "id": new_review.id,
             "text": new_review.text,
             "rating": new_review.rating,
             "user_id": new_review.user_id,
