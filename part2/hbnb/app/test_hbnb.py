@@ -126,7 +126,7 @@ class TestReviewEndpoints(unittest.TestCase):
         user_response = self.client.post('/api/v1/users/', json={
             "first_name": "Janis",
             "last_name": "Smith",
-            "email": "janis.smith@example.com"
+            "email": f"janis.smith{uuid.uuid4()}@example.com"
         })
         user = user_response.get_json()
         if 'id' in user:
