@@ -1,57 +1,31 @@
-# HBnB - BL and API
+# HBnB - Auth & DB
 This directory contains the following tasks:
 
-- 0 Project Setup and Package Initialization
-- 1 Core Business Logic Classes
-- 2 User Endpoints
-- 3 Amenity Endpoints
-- 4 Place Endpoints
-- 5 Review Endpoints
-- 6 Testing and Validation
+- 0 Modify the Application Factory to Include the Configuration
+- 1 Modify the User Model to Include Password Hashing
+- 2 Implement JWT Authentication with flask-jwt-extended
+- 3 Implement Authenticated User Access Endpoints
+- 4 Implement Administrator Access Endpoints
+- 5 Implement SQLAlchemy Repository
+- 6 Map the User Entity to SQLAlchemy Model
+- 7 Map the Place, Review, and Amenity Entities
+- 8 Map Relationships Between Entities Using SQLAlchemy
+- 9 SQL Scripts for Table Generation and Initial Data
+- 10 Generate Database Diagrams
 
-# Part 2: Implementation of Business Logic and API Endpoints
-In this part of the HBnB Project, you will begin the implementation phase of the application based on the design developed in the previous part. The focus of this phase is to build the Presentation and Business Logic layers of the application using Python and Flask. You will implement the core functionality by defining the necessary classes, methods, and endpoints that will serve as the foundation for the application’s operation.
+# Objectives of the Project
 
-- In this part, you will create the structure of the project, develop the classes that define the business logic, and implement the API endpoints. The goal is to bring the documented architecture to life by setting up the key functionalities, such as creating and managing users, places, reviews, and amenities, while adhering to best practices in API design.
+- Authentication and Authorization: Implement JWT-based user authentication using Flask-JWT-Extended and role-based access control with the is_admin attribute for specific endpoints.
+- Database Integration: Replace in-memory storage with SQLite for development using SQLAlchemy as the ORM and prepare for MySQL or other production grade RDBMS.
+- CRUD Operations with Database Persistence: Refactor all CRUD operations to interact with a persistent database.
+- Database Design and Visualization: Design the database schema using mermaid.js and ensure all relationships between entities are correctly mapped.
+- Data Consistency and Validation: Ensure that data validation and constraints are properly enforced in the models.
 
-- It’s important to note that, at this stage, you will focus only on implementing the core functionality of the API. JWT authentication and role-based access control will be addressed in the next part. The services layer will be built using Flask and the flask-restx extension to create RESTful APIs.
+#Learning Objectives
 
-# Objectives
-By the end of this project, you should be able to:
-
-Set Up the Project Structure:
-
-Organize the project into a modular architecture, following best practices for Python and Flask applications.
-Create the necessary packages for the Presentation and Business Logic layers.
-Implement the Business Logic Layer:
-
-Develop the core classes for the business logic, including User, Place, Review, and Amenity entities.
-Implement relationships between entities and define how they interact within the application.
-Implement the facade pattern to simplify communication between the Presentation and Business Logic layers.
-Build RESTful API Endpoints:
-
-Implement the necessary API endpoints to handle CRUD operations for Users, Places, Reviews, and Amenities.
-Use flask-restx to define and document the API, ensuring a clear and consistent structure.
-Implement data serialization to return extended attributes for related objects. For example, when retrieving a Place, the API should include details such as the owner’s first_name, last_name, and relevant amenities.
-Test and Validate the API:
-
-Ensure that each endpoint works correctly and handles edge cases appropriately.
-Use tools like Postman or cURL to test your API endpoints.
-Project Vision and Scope
-The implementation in this part is focused on creating a functional and scalable foundation for the application. You will be working on:
-
-Presentation Layer: Defining the services and API endpoints using Flask and flask-restx. You’ll structure the endpoints logically, ensuring clear paths and parameters for each operation.
-
-Business Logic Layer: Building the core models and logic that drive the application’s functionality. This includes defining relationships, handling data validation, and managing interactions between different components.
-
-At this stage, you won’t need to worry about user authentication or access control. However, you should ensure that the code is modular and organized, making it easy to integrate these features in Part 3.
-
-# Learning Objectives
-This part of the project is designed to help you achieve the following learning outcomes:
-
-Modular Design and Architecture: Learn how to structure a Python application using best practices for modularity and separation of concerns.
-API Development with Flask and flask-restx: Gain hands-on experience in building RESTful APIs using Flask, focusing on creating well-documented and scalable endpoints.
-Business Logic Implementation: Understand how to translate documented designs into working code, implementing core business logic in a structured and maintainable manner.
-Data Serialization and Composition Handling: Practice returning extended attributes in API responses, handling nested and related data in a clear and efficient way.
-Testing and Debugging: Develop skills in testing and validating APIs, ensuring that your endpoints handle requests correctly and return appropriate responses.
+* Implement JWT authentication to secure your API and manage user sessions.
+* Enforce role-based access control to restrict access based on user roles (regular users vs. administrators).
+* Replace in-memory repositories with a SQLite-based persistence layer using SQLAlchemy for development and configure MySQL for production.
+* Design and visualize a relational database schema using mermaid.js to handle relationships between users, places, reviews, and amenities.
+* Ensure the backend is secure, scalable, and provides reliable data storage for production environments.
 
