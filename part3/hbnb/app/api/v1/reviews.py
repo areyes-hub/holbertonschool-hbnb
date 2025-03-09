@@ -1,4 +1,5 @@
 from flask_restx import Namespace, Resource, fields
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.services import facade
 
 
@@ -17,8 +18,17 @@ class ReviewList(Resource):
     @api.expect(review_model)
     @api.response(201, "Review successfully created")
     @api.response(400, "Invalid input data")
+    @jwt_required()
     def post(self):
+        current_user = get_jwt_identity()
         review_data = api.payload
+        place = facade.get_place(review_data["place_id"])
+        reviews = facade.get_all_reviews()
+        if place.owner_id == current_user:
+            return {"error": "You cannot review your own place."}, 400
+        for review in reviews:
+            if review.user_id == current_user:
+                return {"error": "You have already reviewed this place."}, 400
         new_review = facade.create_review(review_data)
         return {
             "id": new_review.id,
@@ -66,11 +76,15 @@ class ReviewResource(Resource):
     @api.response(200, "Review updated successfully")
     @api.response(404, "Review not found")
     @api.response(400, "Invalid input data")
+    @jwt_required()
     def put(self, review_id):
         """Update review's data"""
+        current_user = get_jwt_identity()
         review = facade.get_review(review_id)
         if not review:
             return {"error": "Review not found"}, 404
+        if review.user_id != current_user:
+            return {"error": "Unauthorized action"}, 403
 
         updated_details = api.payload
         
@@ -91,11 +105,15 @@ class ReviewResource(Resource):
 
     @api.response(200, "Review deleted successfully")
     @api.response(404, "Review not found")
+    @jwt_required()
     def delete(self, review_id):
         """Delete a review"""
+        current_user = get_jwt_identity()
         review = facade.get_review(review_id)
         if not review:
             return {"error": "Review not found"}, 404
+        if review.user_id != current_user:
+            return {"error": "Unauthorized action"}, 403
         facade.delete_review(review_id)
         return {"message": "Review deleted successfully"}
 
