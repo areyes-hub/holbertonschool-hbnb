@@ -21,7 +21,7 @@ This directory contains the following tasks:
 - Database Design and Visualization: Design the database schema using mermaid.js and ensure all relationships between entities are correctly mapped.
 - Data Consistency and Validation: Ensure that data validation and constraints are properly enforced in the models.
 
-#Learning Objectives
+# Learning Objectives
 
 * Implement JWT authentication to secure your API and manage user sessions.
 * Enforce role-based access control to restrict access based on user roles (regular users vs. administrators).
