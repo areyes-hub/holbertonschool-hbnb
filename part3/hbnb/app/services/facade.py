@@ -59,12 +59,6 @@ class HBnBFacade:
 
     """Place methods"""
     def create_place(self, place_data):
-        if 'owner' in place_data:
-            owner = place_data.pop('owner')
-            owner_id = owner.get('id')
-        else:
-            owner_id = place_data.get('owner_id')
-        place_data['owner_id'] = owner_id
         amenities = []
         for amenity_id in place_data.get("amenities", []):
             amenity = self.amenity_repo.get(amenity_id)
@@ -101,8 +95,9 @@ class HBnBFacade:
         place_id = review_data.get('place_id')
         if not user_id or not place_id:
             raise ValueError("User ID and Place ID must be provided.")
-        review = Review(**review_data)
         place = self.get_place(place_id)
+        
+        review = Review(**review_data)
         if place:
             place.add_review(review)
         self.review_repo.add(review)

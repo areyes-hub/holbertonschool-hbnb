@@ -34,16 +34,13 @@ class Place(BaseModel):
             raise ValueError("longitude is out of range")
         self.longitude = longitude
         self.owner_id = owner_id
-        self.owner = self.get_owner(self.owner_id)
         self.amenities = amenities
         self.reviews = []
 
 
-    def get_owner(self, id):
+    def get_owner(self):
         from app.services import facade
-        var = facade.get_user(id)
-        return var
-
+        return facade.get_user(self.owner_id)
 
     def add_amenities(self, amenity):
         self.amenities.append(amenity)

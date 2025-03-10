@@ -15,7 +15,6 @@ user_model = api.model('User', {
 
 
 @api.route("/")
-
 class UserList(Resource):
     @api.expect(user_model, validate=True)
     @api.response(201, 'User successfully created')
@@ -86,7 +85,7 @@ class UserResource(Resource):
         user = facade.get_user(user_id)
         if not user:
             return {"error": "User not found"}, 404
-        if user.id != current_user:
+        if user.id != current_user["id"]:
             return {"error": "Unauthorized action."}, 403
         updated_details = api.payload
         if updated_details["email"] is not user.email or updated_details["password"] is not user.password:

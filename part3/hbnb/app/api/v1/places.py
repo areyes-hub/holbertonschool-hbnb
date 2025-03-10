@@ -59,7 +59,7 @@ class PlaceList(Resource):
             'price': new_place.price,
             'latitude': new_place.latitude,
             'longitude': new_place.longitude,
-            'owner_id': current_user
+            'owner_id': current_user["id"]
         }, 201
 
 
@@ -88,7 +88,8 @@ class PlaceResource(Resource):
         """Get place details by ID"""
         place = facade.get_place(place_id)
         if not place:
-            return {"error": "User not found"}, 404
+            return {"error": "Place not found"}, 404
+        owner = place.get_owner()
         return {
             'id': place.id,
             'title': place.title,
@@ -96,11 +97,11 @@ class PlaceResource(Resource):
             'latitude': place.latitude,
             'longitude': place.longitude,
             'owner': {
-                'id': place.owner.id,
-                'first_name': place.owner.first_name,
-                'last_name': place.owner.last_name,
-                'email': place.owner.email
-            } if place.owner else None,
+                'id': owner.id,
+                'first_name': owner.first_name,
+                'last_name': owner.last_name,
+                'email': owner.email
+            } if owner else None,
             'amenities': [
                 {
                     'id': amenity.id,
