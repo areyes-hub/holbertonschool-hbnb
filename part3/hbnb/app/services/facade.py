@@ -87,6 +87,13 @@ class HBnBFacade:
         if place:
             place.update(place_data)
         return place
+    
+
+    def delete_place(self, place_id):
+        place = self.place_repo.get(place_id)
+        if place:
+            self.place_repo.delete(place_id)
+        return {"message": "Place deleted successfully"}
 
 
     """Reviews methods"""

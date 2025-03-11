@@ -19,7 +19,6 @@ class UserList(Resource):
     @api.expect(user_model, validate=True)
     @api.response(201, 'User successfully created')
     @api.response(400, 'Email already registered')
-    @api.response(400, 'Invalid input data')
     def post(self):
         """Register a new user"""
         user_data = api.payload
@@ -38,24 +37,6 @@ class UserList(Resource):
             }, 201
         except (ValueError, TypeError, AssertionError) as e:
             return {"error": str(e)}, 400
-    
-
-    @api.response(200, 'List of users retrieved successfully')
-    @api.response(404, 'No users not found')
-    def get(self):
-        """Get all users"""
-        users = facade.user_repo.get_all()
-        if not users:
-            return {"message": "No users found"}, 404
-        return [
-            {
-                'id': user.id,
-                'first_name': user.first_name,
-                'last_name': user.last_name,
-                'email': user.email
-            }
-            for user in users
-        ], 200
 
 
 @api.route('/<user_id>')
@@ -85,12 +66,10 @@ class UserResource(Resource):
         user = facade.get_user(user_id)
         if not user:
             return {"error": "User not found"}, 404
-        if user.id != current_user["id"]:
+        if user.id != current_user["id"] and not current_user.get('is_admin', False):
             return {"error": "Unauthorized action."}, 403
+        
         updated_details = api.payload
-        if updated_details["email"] is not user.email or updated_details["password"] is not user.password:
-            return {"error": "You cannot modify email or password"}
-
         updated_user = facade.update_user(user_id, updated_details)
         return {
             'id': updated_user.id,
