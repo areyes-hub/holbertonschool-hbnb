@@ -1,50 +1,24 @@
 from app.models.base import BaseModel
+from sqlalchemy import Column, ForeignKey, Integer
+from sqlalchemy.orm import relationship
+from app import db
+
+
+place_amenity = db.Table('place_amenity',
+                         Column('place_id', Integer, ForeignKey('places.id'), primary_key=True),
+                         Column('amenity_id', Integer, ForeignKey('amenities.id'), primary_key=True)
+                         )
 
 
 class Place(BaseModel):
-    def __init__(self, title, description, price, latitude, longitude, owner_id, amenities=[]):
-        super().__init__()
-        if not title:
-            raise ValueError("title cannot be empty")
-        if not isinstance(title, str):
-            raise TypeError("title must be a string")
-        if len(title) > 100:
-            raise ValueError("title length must not exceed 50 characters")
-        self.title = title
+    __tablename__ = 'places'
 
-        if not isinstance(description, str):
-            raise TypeError("description must be a string")
-        self.description = description
-
-        if not isinstance(price, float):
-            raise TypeError("price must be a float")
-        if price < 0.0:
-            raise ValueError("price must be a non negative float")
-        self.price = price
-
-        if not isinstance(latitude, float):
-            raise TypeError("latitude must be a float")
-        if latitude < -90.0 or latitude > 90.0:
-            raise ValueError("latitude is out of range")
-        self.latitude = latitude
-
-        if not isinstance(longitude, float):
-            raise TypeError("longitude must be a float")
-        if longitude < -180.0 or longitude > 180.0:
-            raise ValueError("longitude is out of range")
-        self.longitude = longitude
-        self.owner_id = owner_id
-        self.amenities = amenities
-        self.reviews = []
-
-
-    def get_owner(self):
-        from app.services import facade
-        return facade.get_user(self.owner_id)
-
-    def add_amenities(self, amenity):
-        self.amenities.append(amenity)
-
-
-    def add_review(self, review):
-        self.reviews.append(review)
+    title = db.Column(db.String(50), nullable=False)
+    description = db.Column(db.String(50), nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    latitude = db.Column(db.Float, nullable=False)
+    longitude = db.Column(db.Float, nullable=False)
+    owner_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    reviews = relationship('Review', backref='place', lazy=True)
+    amenities = relationship(
+        'Amenity', secondary=place_amenity, lazy='subquery', backref=db.backref('places', lazy=True))

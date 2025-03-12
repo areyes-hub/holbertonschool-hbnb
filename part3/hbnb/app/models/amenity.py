@@ -1,13 +1,8 @@
 from app.models.base import BaseModel
+from app import db
 
 
 class Amenity(BaseModel):
-    def __init__(self, name):
-        super().__init__()
-        if not name:
-            raise ValueError("name cannot be empty")
-        if not isinstance(name, str):
-            raise TypeError("name must be a string")
-        if len(name) > 50:
-            raise ValueError("name length must not exceed 50 characters")
-        self.name = name
+    __tablename__ = 'amenities'
+
+    name = db.Column(db.String(50), nullable=False)

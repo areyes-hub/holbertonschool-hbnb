@@ -59,7 +59,13 @@ class PlaceList(Resource):
             'price': new_place.price,
             'latitude': new_place.latitude,
             'longitude': new_place.longitude,
-            'owner_id': current_user["id"]
+            'owner_id': current_user["id"],
+            'amenities': [
+                {
+                    'id': amenity.id, # Remove ID field if not needed
+                    'name': amenity.name
+                } for amenity in new_place.amenities
+            ]
         }, 201
 
 

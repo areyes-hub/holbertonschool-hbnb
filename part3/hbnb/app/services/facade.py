@@ -1,4 +1,7 @@
-from app.persistence.repository import InMemoryRepository
+from app.persistence.user_repository import UserRepository
+from app.persistence.place_repository import PlaceRepository
+from app.persistence.amenity_repository import AmenityRepository
+from app.persistence.review_repository import ReviewRepository
 from app.models.user import User
 from app.models.amenity import Amenity
 from app.models.place import Place
@@ -7,15 +10,16 @@ from app.models.review import Review
 
 class HBnBFacade:
     def __init__(self):
-        self.user_repo = InMemoryRepository()
-        self.place_repo = InMemoryRepository()
-        self.review_repo = InMemoryRepository()
-        self.amenity_repo = InMemoryRepository()
+        self.user_repo = UserRepository(User)
+        self.place_repo = PlaceRepository(Place)
+        self.review_repo = AmenityRepository(Review)
+        self.amenity_repo = ReviewRepository(Amenity)
 
 
     """User methods"""
     def create_user(self, user_data):
         user = User(**user_data)
+        user.hash_password(user_data["password"])
         self.user_repo.add(user)
         return user
     
@@ -25,7 +29,7 @@ class HBnBFacade:
     
 
     def get_user_by_email(self, email):
-        return self.user_repo.get_by_attribute('email', email)
+        return self.user_repo.get_user_by_email(email)
     
 
     def update_user(self, user_id, new_data):
@@ -100,13 +104,16 @@ class HBnBFacade:
     def create_review(self, review_data):
         user_id = review_data.get('user_id')
         place_id = review_data.get('place_id')
+        place_rating = review_data.get('rating')
         if not user_id or not place_id:
             raise ValueError("User ID and Place ID must be provided.")
+        if 5 < place_rating < 1:
+            raise ValueError("Rating must be between 1 and 5")
         place = self.get_place(place_id)
         
         review = Review(**review_data)
         if place:
-            place.add_review(review)
+            self.place_repo.add(review)
         self.review_repo.add(review)
         return review
 
@@ -120,7 +127,7 @@ class HBnBFacade:
 
 
     def get_reviews_by_place(self, place_id):
-        place = self.get_place(place_id)
+        place = self.place_repo.get(place_id)
         if place:
             return place.reviews
         return []
