@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place Details</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <img src="logo.png" alt="" class="logo">
+            <a href="login.html" id="login-link" class="login-button">Login</a>
+            <a href="index.html" id="home-link" class="home-button">Home</a>
+        </nav>
+    </header>
+    <main>
+        <section id="place-details">
+            <!-- Place details will be populated dynamically -->
+            <h1 class="place-heading">Place Heading</h1>
+            <ul class="list">
+                <li class="place-info">
+                    <p><strong>Host:</strong> John Doe</p>
+                    <p><strong>price per night:</strong> $$$</p>
+                    <p><strong>Description:</strong> Description goes here...</p>
+                    <p><strong>Amenities:</strong> Amenities go here...</p>
+                </li>
+             </ul>
+        </section>
+        <section id="reviews">
+            <!-- Reviews will be populated dynamically -->
+            <h1 class="review-heading">Reviews</h1>
+            <ul class="list">
+                <li class="review-card">
+                    <h2>Name</h2>
+                    <p>text...</p>
+                    <p>rating...</p>
+                </li>
+             </ul>
+        </section>
+        <section id="add-review">
+            <h2 class="review-heading">Add a Review</h2>
+            <form id="review-form">
+                <label for="review">Your review:</label>
+                <textarea id="review" name="review" required></textarea>
+                <label for="rating">Rating:</label>
+                <select name="rating" id="rating" required>
+                    <option value="1 Star">1 Star</option>
+                    <option value="2 Star">2 Star</option>
+                    <option value="3 Star">3 Star</option>
+                    <option value="4 Star">4 Star</option>
+                    <option value="5 Star">5 Star</option>
+                </select>
+                <button type="submit" class="submit">Submit Review</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>© 2024 HBnB Evolution All rights reserved.</p>
+    </footer>
+    <script src="scripts.js"></script>
+</body>
+</html>
