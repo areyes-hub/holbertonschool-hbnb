@@ -1,8 +1,9 @@
-from flask import Flask
+from flask import Flask, request, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_restx import Api
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS
 
 bcrypt = Bcrypt()
 jwt = JWTManager()
@@ -17,6 +18,23 @@ def create_app(config_class="config.DevelopmentConfig"):
     jwt.init_app(app)
     db.init_app(app)
     api = Api(app)
+    CORS(
+        app,
+        supports_credentials=True,
+        methods=["GET", "POST", "OPTIONS"],
+        resources={r"/api/*": {"origins": "*"}})
+    
+
+    @app.before_request
+    def handle_options():
+        if request.method == "OPTIONS":
+            # Respond to preflight request (OPTIONS) with proper headers
+            response = make_response()
+            response.headers['Access-Control-Allow-Origin'] = '*'
+            response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
+            response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+            return response
+
 
     from app.api.v1.users import api as users_ns
     from app.api.v1.amenities import api as amenities_ns
