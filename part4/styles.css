@@ -88,8 +88,14 @@ h1 {
 #places-list,
 #place-details {
     display: flex;
+    flex-wrap: wrap;
     width: 100%;
     flex-direction: column;
+}
+
+.place-list {
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .login-header {
