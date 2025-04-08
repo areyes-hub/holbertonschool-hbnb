@@ -103,6 +103,12 @@ class PlaceResource(Resource):
             'description': place.description,
             'latitude': place.latitude,
             'longitude': place.longitude,
+            'reviews': [
+                {
+                    'text': review.text,
+                    'rating': review.rating
+                } for review in place.reviews
+            ],
             'amenities': [
                 {
                     'id': amenity.id,
