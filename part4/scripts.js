@@ -2,9 +2,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('login-form');
     const priceFilter = document.getElementById('price-filter');
     const loginLink = document.getElementById('login-link');
+    const placesList = document.getElementById('places-list');
 
 
-    // Check if login form exists and handle login
+    if (placesList) {
+        placesList.style.display = 'none'; // Ensure it's hidden when the page loads
+    }
+
     if (loginForm) {
         loginForm.addEventListener('submit', async (event) => {
             event.preventDefault();
@@ -16,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // Check user authentication on page load
-    checkAuthentication(loginLink);
+    checkAuthentication(loginLink, placesList);
 
 
     // Set up the price filter dropdown
@@ -44,14 +48,20 @@ function getCookie(name) {
 
 
 // Function to check if the user is authenticated
-function checkAuthentication(loginLink) {
+function checkAuthentication(loginLink, placesList) {
     const token = getCookie('token');
 
 
     if (!token) {
         loginLink.style.display = 'block'; // Show the login link if no token
+        if (placesList) {
+            placesList.style.display = 'none'; // Ensure places list is hidden before login
+        }
     } else {
         loginLink.style.display = 'none'; // Hide the login link if the token exists
+        if (placesList) {
+            placesList.style.display = 'flex'; // Show places list after authentication
+        }
         fetchPlaces(token); // Fetch places if the user is authenticated
     }
 }

@@ -85,7 +85,13 @@ h1 {
     flex-direction: column;
 }
 
-#places-list,
+#places-list {
+    display: none;
+    flex-wrap: wrap;
+    width: 100%;
+    flex-direction: column;
+}
+
 #place-details {
     display: flex;
     flex-wrap: wrap;
