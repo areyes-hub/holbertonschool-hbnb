@@ -1,5 +1,5 @@
 :root {
-    --color-orange: #f99704;
+    --color-orange: #ff9800;
     --text-light-color: #fff;
     --text-dark-color: #333;
     --body-background-color: #f4f4f4;
@@ -25,7 +25,8 @@ main {
     padding-right: 20px;
 }
 
-#login-form {
+#login-form,
+#review-form {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -34,7 +35,8 @@ main {
     gap: 16px;
 }
 
-#login-form input {
+#login-form input,
+#review-form input {
     border-radius: 10px;
     padding-left: 5px;
     border: 1px solid var(--input-border-color);
@@ -42,7 +44,8 @@ main {
     height: 30px;
 }
 
-#login-form button {
+#login-form button,
+#review-form button {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -92,11 +95,27 @@ h1 {
     flex-direction: column;
 }
 
-#place-details {
+#place-details,
+#add-review {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     flex-wrap: wrap;
+    margin: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 4px 4px 15px #80808055;
+    gap: 16px;
     width: 100%;
     flex-direction: column;
+}
+
+#comment {
+    width: 350px;
+    height: 150px;
 }
 
 .place-list {
@@ -135,8 +154,7 @@ h1 {
     height: 100%;
 }
 
-.place-info,
-.review-card {
+.place-info {
     margin: 20px;
     padding: 10px;
     border: 1px solid #ddd;
@@ -150,6 +168,22 @@ h1 {
     gap: 16px;
     width: 100%;
     height: 100%;
+}
+
+.review-card {
+    margin: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    box-shadow: 4px 4px 15px #80808055;
+    gap: 16px;
+    width: 350px;
+    height: 100px;
 }
 
 #review-form {

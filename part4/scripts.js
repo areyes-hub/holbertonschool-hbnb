@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const priceFilter = document.getElementById('price-filter');
     const loginLink = document.getElementById('login-link');
     const placesList = document.getElementById('places-list');
+    const addReview = document.getElementById('add-review')
     
     // Ensure places list is hidden on load
     if (placesList) {
@@ -20,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Check user authentication on page load
-    checkAuthentication(loginLink, placesList);
+    checkAuthentication(loginLink, placesList, addReview);
 
     // Set up price filter dropdown
     if (priceFilter) {
@@ -54,7 +55,7 @@ function getCookie(name) {
 }
 
 // Function to check if the user is authenticated
-function checkAuthentication(loginLink, placesList) {
+function checkAuthentication(loginLink, placesList, addReview) {
     const token = getCookie('token');
 
     if (!token) {
@@ -62,10 +63,16 @@ function checkAuthentication(loginLink, placesList) {
         if (placesList) {
             placesList.style.display = 'none'; // Ensure places list is hidden before login
         }
+        if (addReview) {
+            addReview.style.display = 'none';
+        }
     } else {
         loginLink.style.display = 'none'; // Hide login link if token exists
         if (placesList) {
             placesList.style.display = 'flex'; // Show places list after authentication
+        }
+        if (addReview) {
+            addReview.style.display = 'flex';
         }
         fetchPlaces(token); // Fetch places if the user is authenticated
     }
@@ -203,8 +210,8 @@ function displayPlaceDetails(place) {
             <h3>Reviews:</h3>
             ${place.reviews.map(review => `
                 <div class="review-card">
-                    <p><strong>${review.username}</strong> (Rating: ${review.rating})</p>
-                    <p>${review.comment}</p>
+                    <p>Rating: ${review.rating}</p>
+                    <p>${review.text}</p>
                 </div>
             `).join('')}
         </div>
