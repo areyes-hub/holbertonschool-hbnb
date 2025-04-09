@@ -205,7 +205,7 @@ function displayPlaceDetails(place) {
         <h1>${place.title || 'No title available'}</h1>
         <p><strong>Price:</strong> $${place.price || 'N/A'}</p>
         <p><strong>Description:</strong> ${place.description || 'No description available'}</p>
-        <p><strong>Amenities:</strong> ${place.amenities.join(', ') || 'No amenities listed'}</p>
+        <p><strong>Amenities:</strong> ${place.amenities.name || 'No amenities listed'}</p>
         <div id="reviews">
             <h3>Reviews:</h3>
             ${place.reviews.map(review => `
