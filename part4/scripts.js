@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const priceFilter = document.getElementById('price-filter');
     const loginLink = document.getElementById('login-link');
     const placesList = document.getElementById('places-list');
-    const addReview = document.getElementById('add-review')
+    const addReview = document.getElementById('add-review');
     
     // Ensure places list is hidden on load
     if (placesList) {
@@ -213,7 +213,7 @@ function displayPlaceDetails(place) {
                     <p>Rating: ${review.rating}</p>
                     <p>${review.text}</p>
                 </div>
-            `).join('')}
+            `).join('') || '<br>No reviews listed'}
         </div>
     `;
 
@@ -248,31 +248,37 @@ function displayPlaceDetails(place) {
 
 // Function to submit a new review
 async function submitReview(placeId, rating, comment) {
-    const token = getCookie('token');
-    
-    if (!token) {
-        alert('You must be logged in to submit a review.');
-        return;
-    }
-
-    try {
-        const response = await fetch(`http://localhost:5000/api/v1/places/${placeId}/reviews`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ rating, comment })
-        });
-
-        if (response.ok) {
-            const newReview = await response.json();
-            alert('Review submitted successfully!');
-            window.location.reload(); // Reload the page to show the new review
-        } else {
-            console.error('Failed to submit review');
+    const reviewForm = document.getElementById('review-form');
+    if (reviewForm) {
+        const token = getCookie('token');
+        if (!token) {
+            window.location.href = 'index.html';
+            return;
         }
-    } catch (error) {
-        console.error('Error submitting review:', error);
+        reviewForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            try {
+                const response = await fetch(`http://localhost:5000/api/v1/places/${placeId}/reviews`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ rating, 'text': comment })
+                });
+
+                if (response.ok) {
+                    alert('Review added successfully!');
+                    reviewForm.reset();
+                    window.location.href = 'index.html';
+                } else {
+                    const errorData = await response.json();
+                    alert('Review failed: ' + errorData.error);
+                } 
+            } catch (error) {
+        console.error('Error during login:', error);
+        alert('An error occurred. Please try again.');
+    }
+        });
     }
 }
