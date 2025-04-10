@@ -127,7 +127,39 @@ class ReviewResource(Resource):
 
 
 @api.route("/places/<place_id>/reviews")
+@api.doc(params={'place_id': 'ID of the place'})
 class PlaceReviewsList(Resource):
+    @api.expect(review_model)
+    @api.response(201, "Review successfully created")
+    @api.response(400, "Invalid input data")
+    @jwt_required()
+    def post(self, place_id):
+        current_user = get_jwt_identity()
+        review_data = api.payload
+        review_data["place_id"] = place_id
+        review_data["user_id"] = current_user["id"]
+
+        place = facade.get_place(place_id)
+        if not place:
+            return {"error": "Place not found"}, 404
+
+        if place.owner_id == current_user["id"]:
+            return {"error": "You cannot review your own place."}, 400
+
+        reviews = facade.get_reviews_by_place(place_id)
+        for review in reviews:
+            if review.user_id == current_user["id"]:
+                return {"error": "You have already reviewed this place."}, 400
+
+        new_review = facade.create_review(review_data)
+        return {
+            "id": new_review.id,
+            "text": new_review.text,
+            "rating": new_review.rating,
+            "user_id": new_review.user_id,
+            "place_id": new_review.place_id
+        }, 201
+    
     @api.response(200, 'List of reviews for the place retrieved successfully')
     @api.response(404, 'Place not found')
     def get(self, place_id):

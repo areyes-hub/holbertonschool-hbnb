@@ -8,7 +8,7 @@ class Review(BaseModel):
 
     text = db.Column(db.String(50), nullable=False)
     rating = db.Column(db.Integer, nullable=False)
-    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=True) #Change back to false
     place_id = Column(Integer, ForeignKey('places.id'), nullable=False)
 
 

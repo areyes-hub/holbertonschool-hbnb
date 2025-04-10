@@ -104,7 +104,7 @@ class HBnBFacade:
     def create_review(self, review_data):
         user_id = review_data.get('user_id')
         place_id = review_data.get('place_id')
-        place_rating = review_data.get('rating')
+        place_rating = int(review_data.get('rating'))
         if not user_id or not place_id:
             raise ValueError("User ID and Place ID must be provided.")
         if 5 < place_rating < 1:
