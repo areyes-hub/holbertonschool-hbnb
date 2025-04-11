@@ -89,7 +89,7 @@ h1 {
 }
 
 #places-list {
-    display: none;
+    display: flex;
     flex-wrap: wrap;
     width: 100%;
     flex-direction: column;

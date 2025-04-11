@@ -2,13 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('login-form');
     const priceFilter = document.getElementById('price-filter');
     const loginLink = document.getElementById('login-link');
-    const placesList = document.getElementById('places-list');
     const addReview = document.getElementById('add-review');
-    
-    // Ensure places list is hidden on load
-    if (placesList) {
-        placesList.style.display = 'none';
-    }
 
     // Handle login form submission
     if (loginForm) {
@@ -21,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Check user authentication on page load
-    checkAuthentication(loginLink, placesList, addReview);
+    checkAuthentication(loginLink, addReview);
 
     // Set up price filter dropdown
     if (priceFilter) {
@@ -55,22 +49,16 @@ function getCookie(name) {
 }
 
 // Function to check if the user is authenticated
-function checkAuthentication(loginLink, placesList, addReview) {
+function checkAuthentication(loginLink, addReview) {
     const token = getCookie('token');
 
     if (!token) {
-        loginLink.style.display = 'block'; // Show login link if no token
-        if (placesList) {
-            placesList.style.display = 'none'; // Ensure places list is hidden before login
-        }
+        loginLink.style.display = 'block';
         if (addReview) {
             addReview.style.display = 'none';
         }
     } else {
-        loginLink.style.display = 'none'; // Hide login link if token exists
-        if (placesList) {
-            placesList.style.display = 'flex'; // Show places list after authentication
-        }
+        loginLink.style.display = 'none';
         if (addReview) {
             addReview.style.display = 'flex';
         }
